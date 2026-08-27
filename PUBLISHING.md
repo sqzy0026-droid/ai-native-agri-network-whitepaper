@@ -10,8 +10,8 @@
 - [x] 样例数据使用保留示例域名和虚构标识；
 - [x] 已明确双授权及第三方内容排除项；
 - [x] GitHub Actions校验工作流通过；
-- [ ] 将仓库可见性从Private改为Public；
-- [ ] 以未登录访问验证README、LICENSE和Actions页面。
+- [x] 将仓库可见性从Private改为Public；
+- [x] 以未登录访问验证README、LICENSE和Actions页面。
 
 ## 发布后的持续要求
 
