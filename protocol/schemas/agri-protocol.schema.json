@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/agri-market/0.1/agri-protocol.schema.json",
+  "title": "AI原生开放助农交易协议",
+  "type": "object",
+  "$defs": {
+    "VillageNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol", "type", "node_id", "name", "region", "operator", "endpoints", "public_key", "status", "updated_at"],
+      "properties": {
+        "protocol": {"const": "agri-market/0.1"},
+        "type": {"const": "VillageNode"},
+        "node_id": {"type": "string", "pattern": "^[A-Z0-9-]{3,64}$"},
+        "name": {"type": "string", "minLength": 2, "maxLength": 100},
+        "region": {"type": "string", "minLength": 2, "maxLength": 200},
+        "operator": {"type": "string", "minLength": 2, "maxLength": 100},
+        "endpoints": {
+          "type": "object",
+          "required": ["public_api"],
+          "properties": {"public_api": {"type": "string", "format": "uri"}},
+          "additionalProperties": {"type": "string", "format": "uri"}
+        },
+        "public_key": {"type": "string", "minLength": 16},
+        "status": {"enum": ["PILOT", "ACTIVE", "SUSPENDED", "RETIRED"]},
+        "updated_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "Farmer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol", "type", "farmer_id", "node_id", "public_name", "verification_status", "updated_at"],
+      "properties": {
+        "protocol": {"const": "agri-market/0.1"},
+        "type": {"const": "Farmer"},
+        "farmer_id": {"type": "string", "pattern": "^[A-Z0-9-]{3,64}$"},
+        "node_id": {"type": "string"},
+        "public_name": {"type": "string", "minLength": 1, "maxLength": 100},
+        "verification_status": {"enum": ["PENDING", "VERIFIED", "SUSPENDED", "REVOKED"]},
+        "product_categories": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "updated_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "ProductBatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol", "type", "batch_id", "node_id", "farmer_id", "product", "origin", "quantity", "unit", "status", "updated_at"],
+      "properties": {
+        "protocol": {"const": "agri-market/0.1"},
+        "type": {"const": "ProductBatch"},
+        "batch_id": {"type": "string", "pattern": "^[A-Z0-9-]{3,80}$"},
+        "node_id": {"type": "string"},
+        "farmer_id": {"type": "string"},
+        "product": {"type": "string", "minLength": 1, "maxLength": 100},
+        "variety": {"type": "string", "maxLength": 100},
+        "origin": {"type": "string", "minLength": 2, "maxLength": 200},
+        "estimated_harvest_date": {"type": ["string", "null"], "format": "date"},
+        "actual_harvest_date": {"type": ["string", "null"], "format": "date"},
+        "quantity": {"type": "number", "exclusiveMinimum": 0},
+        "unit": {"type": "string", "minLength": 1, "maxLength": 30},
+        "grade_standard": {"type": "string", "maxLength": 300},
+        "evidence_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "status": {"enum": ["DRAFT", "PRE_SALE", "HARVESTED", "SOLD_OUT", "CLOSED"]},
+        "updated_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "Evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol", "type", "evidence_id", "subject_id", "claim_type", "issuer", "issued_at", "status", "content_hash", "signature"],
+      "properties": {
+        "protocol": {"const": "agri-market/0.1"},
+        "type": {"const": "Evidence"},
+        "evidence_id": {"type": "string"},
+        "subject_id": {"type": "string"},
+        "claim_type": {"enum": ["IDENTITY", "ORIGIN", "HARVEST", "INSPECTION", "WEIGHT", "HANDOVER", "DELIVERY", "CONSUMER_FEEDBACK"]},
+        "issuer": {"type": "string"},
+        "issued_at": {"type": "string", "format": "date-time"},
+        "expires_at": {"type": ["string", "null"], "format": "date-time"},
+        "status": {"enum": ["ACTIVE", "CHALLENGED", "REVOKED", "EXPIRED"]},
+        "content_hash": {"type": "string", "pattern": "^sha256:[a-fA-F0-9]{64}$"},
+        "signature": {"type": "string", "minLength": 16}
+      }
+    },
+    "Offer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol", "type", "offer_id", "node_id", "batch_id", "quantity_available", "unit", "price", "currency", "delivery_regions", "valid_until", "after_sales_rule", "updated_at", "signature"],
+      "properties": {
+        "protocol": {"const": "agri-market/0.1"},
+        "type": {"const": "Offer"},
+        "offer_id": {"type": "string"},
+        "node_id": {"type": "string"},
+        "batch_id": {"type": "string"},
+        "quantity_available": {"type": "number", "minimum": 0},
+        "unit": {"type": "string"},
+        "price": {"type": "number", "minimum": 0},
+        "currency": {"const": "CNY"},
+        "minimum_order_quantity": {"type": "number", "exclusiveMinimum": 0},
+        "delivery_regions": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "estimated_ship_date": {"type": ["string", "null"], "format": "date"},
+        "valid_until": {"type": "string", "format": "date-time"},
+        "after_sales_rule": {"type": "string", "minLength": 5, "maxLength": 500},
+        "updated_at": {"type": "string", "format": "date-time"},
+        "signature": {"type": "string", "minLength": 16}
+      }
+    },
+    "Intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol", "type", "intent_id", "purpose", "quantity", "unit", "budget_max", "currency", "constraints", "ranking_weights", "authorization", "created_at"],
+      "properties": {
+        "protocol": {"const": "agri-market/0.1"},
+        "type": {"const": "Intent"},
+        "intent_id": {"type": "string"},
+        "purpose": {"type": "string", "minLength": 1, "maxLength": 300},
+        "quantity": {"type": "number", "exclusiveMinimum": 0},
+        "unit": {"type": "string"},
+        "budget_max": {"type": "number", "exclusiveMinimum": 0},
+        "currency": {"const": "CNY"},
+        "constraints": {"type": "object"},
+        "ranking_weights": {
+          "type": "object",
+          "additionalProperties": {"type": "number", "minimum": 0, "maximum": 1}
+        },
+        "authorization": {
+          "type": "object",
+          "required": ["may_inquire", "may_create_draft_order", "may_pay"],
+          "properties": {
+            "may_inquire": {"type": "boolean"},
+            "may_create_draft_order": {"type": "boolean"},
+            "may_pay": {"type": "boolean"}
+          },
+          "additionalProperties": false
+        },
+        "created_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "RecommendationReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol", "type", "receipt_id", "intent_id", "indexes_queried", "candidate_offer_ids", "selected_offer_ids", "hard_filters", "ranking_weights", "exclusions", "commercial_relationships", "agent_version", "model", "generated_at"],
+      "properties": {
+        "protocol": {"const": "agri-market/0.1"},
+        "type": {"const": "RecommendationReceipt"},
+        "receipt_id": {"type": "string"},
+        "intent_id": {"type": "string"},
+        "indexes_queried": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+        "candidate_offer_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "selected_offer_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+        "hard_filters": {"type": "object"},
+        "ranking_weights": {"type": "object", "additionalProperties": {"type": "number"}},
+        "exclusions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["offer_id", "reason"],
+            "properties": {"offer_id": {"type": "string"}, "reason": {"type": "string"}},
+            "additionalProperties": false
+          }
+        },
+        "commercial_relationships": {"type": "array", "items": {"type": "string"}},
+        "agent_version": {"type": "string"},
+        "model": {"type": "string"},
+        "generated_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "OrderEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol", "type", "event_id", "order_id", "sequence", "event_type", "actor", "occurred_at", "idempotency_key", "signature"],
+      "properties": {
+        "protocol": {"const": "agri-market/0.1"},
+        "type": {"const": "OrderEvent"},
+        "event_id": {"type": "string"},
+        "order_id": {"type": "string"},
+        "sequence": {"type": "integer", "minimum": 1},
+        "event_type": {"enum": ["PROPOSED", "ACCEPTED", "PAYMENT_PENDING", "PAID", "COLLECTED", "SHIPPED", "DELIVERED", "COMPLETED", "DISPUTED", "REFUND_PENDING", "REFUNDED", "RESOLVED", "CANCELLED"]},
+        "actor": {"type": "string"},
+        "payload": {"type": "object"},
+        "occurred_at": {"type": "string", "format": "date-time"},
+        "idempotency_key": {"type": "string", "minLength": 8},
+        "signature": {"type": "string", "minLength": 16}
+      }
+    }
+  }
+}
