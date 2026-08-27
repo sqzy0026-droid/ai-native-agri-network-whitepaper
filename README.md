@@ -31,7 +31,7 @@
 - [JSON Schema](protocol/schemas/agri-protocol.schema.json)
 - [样例交易](protocol/examples/complete-transaction.json)
 - [90天试点计划](pilot/90_DAY_PILOT.md)
-- [许可证建议](governance/LICENSE_PROPOSAL.md)
+- [许可证政策](governance/LICENSE_PROPOSAL.md)
 - [GitHub发布步骤](PUBLISHING.md)
 
 ## 快速验证
@@ -73,9 +73,15 @@ Windows PowerShell：
 - 数字签名证明谁提交了证据，不证明现实陈述天然真实；
 - 农户收益、消费者复购和退出演练同时通过，才允许扩大试点。
 
-## 许可证状态
+## 许可证
 
-本仓库当前为公开评审草案，尚未正式授予开源许可证。建议的分层许可方案见[许可证建议](governance/LICENSE_PROPOSAL.md)。在权利人明确确认前，不接收外部代码贡献，也不宣称本仓库已经开源。
+本仓库采用分层开放许可：
+
+- 协议Schema、样例、验证与构建脚本采用[Apache License 2.0](LICENSE)；
+- 白皮书、架构、治理、试点和协议说明文档采用[CC BY 4.0](LICENSE)；
+- 第三方引用材料、真实个人信息和交易数据不纳入上述许可。
+
+完整的适用范围、署名方式和排除项见[许可证政策](governance/LICENSE_PROPOSAL.md)。开放的是协议、工具和公共知识，不是农户与消费者的私密数据。
 
 ## 免责声明
 

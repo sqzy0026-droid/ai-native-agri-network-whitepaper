@@ -1,0 +1,48 @@
+AI原生开放助农网络双授权声明
+
+Copyright 2026 AI原生开放助农网络贡献者
+
+本仓库按内容类型采用以下许可证。除非具体文件另有明确声明：
+
+1. 软件与技术制品
+
+以下内容采用 Apache License 2.0（SPDX 标识：Apache-2.0）：
+
+- .github/**
+- scripts/**
+- protocol/schemas/**
+- protocol/examples/**
+- requirements-dev.txt
+- .gitignore
+
+Apache License 2.0 的正式文本：
+https://www.apache.org/licenses/LICENSE-2.0
+
+2. 文档与文字作品
+
+以下内容采用 Creative Commons Attribution 4.0 International
+（SPDX 标识：CC-BY-4.0）：
+
+- README.md
+- WHITEPAPER.md
+- PUBLISHING.md
+- architecture/**/*.md
+- governance/**/*.md
+- pilot/**/*.md
+- protocol/**/*.md
+
+CC BY 4.0 的正式文本：
+https://creativecommons.org/licenses/by/4.0/legalcode
+
+使用上述文档时，应注明“AI原生开放助农网络贡献者”、提供原始仓库链接和
+许可证链接，并说明是否作出修改。
+
+3. 不在授权范围内的内容
+
+- 仓库引用或链接的第三方作品仍适用其各自的版权与许可条件；
+- 真实农户、消费者、村级节点和合作机构的个人信息、交易数据、地址、证件、
+  支付信息及未公开业务材料，不因本仓库授权而获得公开或再利用许可；
+- 项目名称、标识以及任何主体的商标权不随上述许可证授予。
+
+许可证并不替代隐私授权、数据处理协议、食品安全责任、支付合规或其他依法
+必须取得的许可。所有内容均按“现状”提供，不附带任何明示或默示保证。

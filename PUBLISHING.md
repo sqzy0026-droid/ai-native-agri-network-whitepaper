@@ -1,43 +1,26 @@
-# GitHub发布步骤
+# GitHub公开发布检查表
 
-本目录已经初始化为`main`分支的本地Git仓库，但当前机器尚未登录GitHub，也没有配置Git提交者姓名和邮箱，因此自动发布在提交前停止。
+仓库地址：<https://github.com/sqzy0026-droid/ai-native-agri-network-whitepaper>
 
-## 1. 确认许可证
+## 发布前
 
-先阅读[许可证建议](governance/LICENSE_PROPOSAL.md)，由权利人明确著作权主体和各类内容的许可证。确认后再增加正式`LICENSE`文件。
+- [x] 使用仓库级GitHub身份提交，不修改机器全局身份；
+- [x] 本地验证脚本通过；
+- [x] 未发现账号密钥、真实联系方式、证件、地址或支付数据；
+- [x] 样例数据使用保留示例域名和虚构标识；
+- [x] 已明确双授权及第三方内容排除项；
+- [x] GitHub Actions校验工作流通过；
+- [ ] 将仓库可见性从Private改为Public；
+- [ ] 以未登录访问验证README、LICENSE和Actions页面。
 
-## 2. 配置提交身份
+## 发布后的持续要求
 
-在本仓库中配置真实姓名和邮箱，不建议为了通过命令而填写虚假身份。
+每次提交前运行：
 
 ```bash
-git config user.name "你的姓名或组织名称"
-git config user.email "你的GitHub邮箱"
-```
-
-## 3. 本地验证与提交
-
-```bash
-python -m pip install -r requirements-dev.txt
 python scripts/validate.py
-git add .
-git commit -m "Initial public whitepaper draft"
 ```
 
-## 4. 登录GitHub
+不得提交真实农户、消费者、村级节点或合作机构的身份证明、完整联系方式、收货地址、银行卡、支付凭据、未脱敏订单和内部政务材料。
 
-```bash
-gh auth login
-```
-
-## 5. 创建远程仓库并推送
-
-建议仓库名：`ai-native-agri-network-whitepaper`。
-
-正式开放许可尚未确认前，建议先创建私有仓库进行内部审阅：
-
-```bash
-gh repo create ai-native-agri-network-whitepaper --private --source . --remote origin --push
-```
-
-完成许可证和公开发布审核后，再将仓库改为公开。不要把真实农户、消费者、支付、身份证明和收货地址提交到公开仓库。
+新增第三方代码、图片或长篇文字前，应记录来源和许可证；仅有公开链接而没有许可证，不代表可以复制、修改或重新授权。
